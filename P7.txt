@@ -1,0 +1,1 @@
+Hormis la métrique choisie, au moins un autre indicateur a été calculé pour comparer les modèles (ex : le temps nécessaire pour l’entraînement du modèle)

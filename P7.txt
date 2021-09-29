@@ -1,6 +1,22 @@
-Retirer les nombres
+Questions:
 
-Hormis la métrique choisie, au moins un autre indicateur a été calculé pour comparer les modèles (ex : le temps nécessaire pour l’entraînement du modèle)
+  
 
-https://machinelearningmastery.com/develop-word-embedding-model-predicting-movie-review-sentiment/
-(https://www.kaggle.com/marijakekic/cnn-in-keras-with-pretrained-word2vec-weights/notebook)
+-----------------------------------------------------------
+
+Todo:
+
+  Embedding
+
+  LSTM
+
+
+-----------------------------------------------------------
+
+Docs:
+
+  https://machinelearningmastery.com/develop-word-embedding-model-predicting-movie-review-sentiment/
+  
+  (https://www.kaggle.com/marijakekic/cnn-in-keras-with-pretrained-word2vec-weights/notebook)
+
+  https://realpython.com/python-keras-text-classification/ (HP opti à la fin)

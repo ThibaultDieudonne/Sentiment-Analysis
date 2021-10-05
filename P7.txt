@@ -6,11 +6,11 @@ Questions:
 
 Todo:
 
-  Embedding
+  Word2vec
 
-  LSTM
+  Azure
 
-
+  Accuracy pas top: tweets pauvres problématiques
 -----------------------------------------------------------
 
 Docs:
@@ -20,3 +20,5 @@ Docs:
   (https://www.kaggle.com/marijakekic/cnn-in-keras-with-pretrained-word2vec-weights/notebook)
 
   https://realpython.com/python-keras-text-classification/ (HP opti à la fin)
+
+  https://www.analyticsvidhya.com/blog/2020/03/pretrained-word-embeddings-nlp/ (LSTM)

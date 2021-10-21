@@ -1,6 +1,8 @@
 Questions:
 
-  
+  Modèles d'attention, transformers
+
+  Comment skip les tweet preprocessed vides => réécrire les prédictions
 
 -----------------------------------------------------------
 
@@ -8,10 +10,24 @@ Todo:
 
   Word2vec
 
-  Azure
-
   Accuracy pas top: tweets pauvres problématiques
+
+  Blog
+
+  Update title sizes
+
+  glove 300d
+
+  cours RNN
+
 -----------------------------------------------------------
+
+Links:
+
+  https://portal.azure.com/
+
+  https://ml.azure.com/
+
 
 Docs:
 
@@ -22,3 +38,11 @@ Docs:
   https://realpython.com/python-keras-text-classification/ (HP opti à la fin)
 
   https://www.analyticsvidhya.com/blog/2020/03/pretrained-word-embeddings-nlp/ (LSTM)
+
+
+  https://docs.microsoft.com/fr-fr/azure/machine-learning/tutorial-1st-experiment-hello-world
+
+  https://docs.microsoft.com/fr-fr/azure/machine-learning/quickstart-create-resources
+
+  https://docs.microsoft.com/fr-fr/azure/machine-learning/tutorial-deploy-models-with-aml
+

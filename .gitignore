@@ -1,3 +1,6 @@
 /.ipynb_checkpoints
 /data
 /models
+/azure/azure_uri.txt
+/azure/ASTA_endpoint.txt
+/azure/ASTA_key.txt

@@ -1,24 +1,20 @@
 Questions:
 
-  Modèles d'attention, transformers
+  Traitement de la ponctuation ? (traitement en phrases)
 
-  Comment skip les tweet preprocessed vides => réécrire les prédictions
+  Précision finale décevante, exclure longs twits ?
 
 -----------------------------------------------------------
 
 Todo:
 
-  Word2vec
-
-  Accuracy pas top: tweets pauvres problématiques
-
   Blog
 
-  Update title sizes
-
-  glove 300d
-
   cours RNN
+
+  Au moins un des hyperparamètres du modèle choisi a été optimisé
+ 
+  
 
 -----------------------------------------------------------
 
@@ -31,18 +27,14 @@ Links:
 
 Docs:
 
-  https://machinelearningmastery.com/develop-word-embedding-model-predicting-movie-review-sentiment/
-  
-  (https://www.kaggle.com/marijakekic/cnn-in-keras-with-pretrained-word2vec-weights/notebook)
-
   https://realpython.com/python-keras-text-classification/ (HP opti à la fin)
-
-  https://www.analyticsvidhya.com/blog/2020/03/pretrained-word-embeddings-nlp/ (LSTM)
 
 
   https://docs.microsoft.com/fr-fr/azure/machine-learning/tutorial-1st-experiment-hello-world
 
   https://docs.microsoft.com/fr-fr/azure/machine-learning/quickstart-create-resources
+
+  https://docs.microsoft.com/fr-fr/azure/machine-learning/tutorial-train-models-with-aml
 
   https://docs.microsoft.com/fr-fr/azure/machine-learning/tutorial-deploy-models-with-aml
 

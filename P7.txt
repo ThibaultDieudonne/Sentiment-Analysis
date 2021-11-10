@@ -1,18 +1,12 @@
-Questions:
-
-  Traitement de la ponctuation ? (traitement en phrases)
-
-  Précision finale décevante, exclure longs twits ?
-
------------------------------------------------------------
-
 Todo:
+  
+  Pres
+
+  Texte pres
 
   Blog
 
   cours RNN
-
-  Au moins un des hyperparamètres du modèle choisi a été optimisé
  
   
 

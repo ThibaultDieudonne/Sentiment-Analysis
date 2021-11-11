@@ -2,21 +2,70 @@
 
 2 - 
 
-3 - Les autres colonnes contenaient des informations peu pertinentes pour nous, comme l'auteur ou la date des twits.
+3 - Les seules colonnes qui vont nous intéresser dans le jeu de données sont le contenu des twits et leur classification. Les autres colonnes contenaient des informations peu pertinentes pour le projet, comme l'auteur ou la date.
+    [Décrire brièvement]
 
-4 - J'ai réajusté la cible postive qui était 4 au lieu de 1. Comme le dataset est balancé, on utilisera l'accuracy (exactitude) comme métrique de référence au cours du projet.
+4 - Les données sont classifiées de manière binaires (c'est à dire positive ou négative). La cible positive était 4, donc je l'ai changée à 1.
+    On peut voir que dataset est balancé, ce qui permet d'utiliser l'accuracy comme métrique de référence au cours du projet.
 
 5 - (si jamais, tronquer permet de réduire la taille des réseaux récurrents, donc pas de problème d'explosion/disparition du gradient)
-    Une autre approche pour contruire notre dictionaire aurait consisté à garder les mots les plus fréquemment utilisés.
-    Mais comme notre dataset et celui utilisé par Stanford sont très similaires on obtiendra de meilleurs résultats de cette manière.
-    Parce qu'on a l'avantage de garder les mots peu fréquents qui seront le plus porteur de sens.
-    Et en particulier lors de l'utilisation de l'embedding, certains mots aux orthographes multiples (donc qui apparaissent à très faible fréquence) auront des représentation proches.
+    [décrire]
+    Une autre approche pour contruire notre dictionaire de vocabulaire aurait consisté à ne garder les mots les plus fréquemment utilisés.
+    Mais mon approche présente plusieurs avantages.
+    D’abord, on a la garantie que tous les mots de notre corpus possèderont une représentation quand on utilisera l'embedding.
+    Ensuite, les modèles présenteront plus de robustesse face aux orthographes multiples, car ils possèderont des représentations similaires.
+    Enfin, par rapport à l'approche plus conventionnelle, je garde parmi les mots peu fréquemment utilisés ceux qui sont les plus susceptibles d’être porteurs de sens.
+    Le vocabulaire qu'on obtient est d’un peu moins de 200 000 mots, soit trois fois moins que le nombre de mots uniques du corpus original, qui incluait une proportion considérable de mots mal orthographiés et d’onomatopées.
 
 6 - (si jamais, explication "similarité" => Latent Dirichlet Allocation + coefficient de similarité)
+    [lire]
     Ces deux méthodes permettent de réduire la taille de notre dictionnaire entre 10% et 15%.
     Ce traitement sera utile à nos modèles préliminaires, qui ont une dimensionnalité élevée.
-    Ils seront en revanche contre productifs dans les modèles avec embedding car ils peuvent produire des mots qui n’existent pas dans le vocabulaire de l’embedding.
+    En revanche ils seront inéficaces dans les modèles avec embedding parce qu'ils peuvent produire des mots qui n’existent pas dans le vocabulaire de l’embedding.
 
-7 - 
+7 - [lire et expliquer]
 
+8 - Les premiers modèles implémentés ont été des random forests.
+    Ce sont des modèles d’apprentissage automatique qui consistent à entraîner plusieurs arbres de décision à partir de sous-ensembles des données
+    Ca évite le surapprentissage et peut permettre d'améliorer la vitesse d'apprentissage.
+    Dans notre cas, la dimension des données est impraticable, que ce soit en termes de mémoire ou de temps de calcul, ce qui aurait été le cas avec n’importe quel modèle de régression simple.
+    Donc pour pouvoir s’en servir comme modèle de référence, on utilise un sous-ensemble des données d’origine, basé sur un vocabulaire contenant les quelques milliers de mots les plus fréquents.
+    Les résultats sont assez moyens (autour de 74%). L'amélioration apportée par la lemmatisation et le stemming est marginale sur l'accuracy mais assez notable sur le temps de calcul.
+
+9 - Ensuite je suis passé au deeplearning. Mes premiers modèles sont seulement composé de deux couches denses.
+    Comme pour les random forest, les données en entrée sont les bag-of-words, avec la même problématique de dimensionnalité. J'ai donc réutilisé les données avec le vocabulaire restreint.
+    Les résultats sont un peu meilleur (autour de 76,5%), mais les temps d'entraînements sont comparables. Les traitements additionnels améliorent les temps de calculs, mais l'accuracy similaire.
+
+
+10 - [lire et expliquer]
+
+11 - [lire]
+
+12 - [décrire]
+
+13 - Le premier modèle avec embedding est un réseau de neurones convolutif. Une couche de convolution applique des filtres sur des fenêtres de mots de taille prédéfinie, et les paramètres des filtres sont appris par le modèle.
+     La couche de pooling permet de réduire la dimension des données, et les deux couches denses qui suivent permettent d'effectuer les prédictions.
+
+     Le second modèle est un réseau avec une couche Long Short Term Memory (ou LSTM). Il s’agit d’une couche récurrente, qui traite les données de manière séquentielle. Cette couche à la particularité de posséder une mémoire.
+     Pour chaque élément d’une séquence, elle peut mettre à jour le contenu de sa mémoire, oublier de l’information, ou influer sur la sortie du neurone. Les paramètres de son comportement sont des poids appris par le modèle.
+
+14 - [lire]
+
+15 - Les résultats sont corrects, avec une précision autour des 80% Les temps de calculs sont des milliers de fois plus rapides pour entraîner les modèles, avec un temps de 5 minutes pour entraîner le meilleur modèle.
+     La rapidité s'explique par la petite dimension des données en entrée.
+
+16 - Pour essayer de comprendre pourquoi mes résultats n'étaient pas meilleurs j'ai essayé de voir si le taux d'erreur dépendait du nombre de mot d'un texte.
+     En pratique les résultats se détériorent légèrement avec la longueur des textes. A noter que les taux d'erreurs pour les phrases de plus de 17 mots ne sont pas représentatifs car les occurences sont trop faibles.
+
+17 - [lire et décrire]
+     
+18 - [décrire]
+
+19 - [lire] En pratique les résultats obtenus avec ce service ce sont avérés décevants car une grande portion du jeu d’entraînement est prédite comme neutre par l’API, ce qui rend les prédictions binaires associées de mauvaise qualité.
+
+20 - En conclusion, je peux dire que mes meilleurs modèles sont définitivement ceux avec embedding, qui offrent une précision nettement supérieure aux autres modèles et des temps d'entraînement praticables avec de très grands datasets.
+     Pour aller plus loin et tenter d'améliorer encore l'accuracy des modèles, j'ai deux autres pistes potentielles:
+     Soit entraîner mon propre embedding et donc créer mon propre vocabulaire de référence, mais les temps d'entraînement peuvent être très longs.
+     Soit me tourner vers des modèles encore plus avancés comme les mécanismes d'attention.
+     Quoi qu'il en soit on peut considérer ces deux approches comme au delà du scope de ce projet.
 

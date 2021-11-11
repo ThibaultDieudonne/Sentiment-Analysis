@@ -1,7 +1,5 @@
 Todo:
   
-  Pres
-
   Texte pres
 
   Blog

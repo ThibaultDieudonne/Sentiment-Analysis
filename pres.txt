@@ -6,15 +6,16 @@
 
 4 - J'ai réajusté la cible postive qui était 4 au lieu de 1. Comme le dataset est balancé, on utilisera l'accuracy (exactitude) comme métrique de référence au cours du projet.
 
-5 - Une autre approche pour contruire notre dictionaire aurait consisté à garder les mots les plus fréquemment utilisés.
+5 - (si jamais, tronquer permet de réduire la taille des réseaux récurrents, donc pas de problème d'explosion/disparition du gradient)
+    Une autre approche pour contruire notre dictionaire aurait consisté à garder les mots les plus fréquemment utilisés.
     Mais comme notre dataset et celui utilisé par Stanford sont très similaires on obtiendra de meilleurs résultats de cette manière.
     Parce qu'on a l'avantage de garder les mots peu fréquents qui seront le plus porteur de sens.
     Et en particulier lors de l'utilisation de l'embedding, certains mots aux orthographes multiples (donc qui apparaissent à très faible fréquence) auront des représentation proches.
 
-6 - (Si jamais explication "similarité") => Latent Dirichlet Allocation + coefficient de similarité)
+6 - (si jamais, explication "similarité" => Latent Dirichlet Allocation + coefficient de similarité)
     Ces deux méthodes permettent de réduire la taille de notre dictionnaire entre 10% et 15%.
     Ce traitement sera utile à nos modèles préliminaires, qui ont une dimensionnalité élevée.
-    Ils seront en revanche contre productifs dans les modèles avec embedding car ils peuvent produire des mots qui n’existent pas dans le dictionnaire de l’embedding.
+    Ils seront en revanche contre productifs dans les modèles avec embedding car ils peuvent produire des mots qui n’existent pas dans le vocabulaire de l’embedding.
 
 7 - 
 

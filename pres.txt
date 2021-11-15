@@ -2,13 +2,14 @@
 
 2 - 
 
-3 - Les seules colonnes qui vont nous intéresser dans le jeu de données sont le contenu des twits et leur classification. Les autres colonnes contenaient des informations peu pertinentes pour le projet, comme l'auteur ou la date.
+3 - Les seules colonnes qui vont nous intéresser dans le jeu de données sont le contenu des twits et leur classification associée.
+    Les autres colonnes contenaient des informations peu pertinentes pour le projet, comme l'auteur ou la date.
     [Décrire brièvement]
 
 4 - Les données sont classifiées de manière binaires (c'est à dire positive ou négative). La cible positive était 4, donc je l'ai changée à 1.
     On peut voir que dataset est balancé, ce qui permet d'utiliser l'accuracy comme métrique de référence au cours du projet.
 
-5 - (si jamais, tronquer permet de réduire la taille des réseaux récurrents, donc pas de problème d'explosion/disparition du gradient)
+5 - 	(si jamais, tronquer permet de réduire la taille des réseaux récurrents, donc pas de problème d'explosion/disparition du gradient)
     [décrire]
     Une autre approche pour contruire notre dictionaire de vocabulaire aurait consisté à ne garder les mots les plus fréquemment utilisés.
     Mais mon approche présente plusieurs avantages.
@@ -17,7 +18,7 @@
     Enfin, par rapport à l'approche plus conventionnelle, je garde parmi les mots peu fréquemment utilisés ceux qui sont les plus susceptibles d’être porteurs de sens.
     Le vocabulaire qu'on obtient est d’un peu moins de 200 000 mots, soit trois fois moins que le nombre de mots uniques du corpus original, qui incluait une proportion considérable de mots mal orthographiés et d’onomatopées.
 
-6 - (si jamais, explication "similarité" => Latent Dirichlet Allocation + coefficient de similarité)
+6 - 	(si jamais, explication "similarité" => Latent Dirichlet Allocation + coefficient de similarité)
     [lire]
     Ces deux méthodes permettent de réduire la taille de notre dictionnaire entre 10% et 15%.
     Ce traitement sera utile à nos modèles préliminaires, qui ont une dimensionnalité élevée.
@@ -30,11 +31,24 @@
     Ca évite le surapprentissage et peut permettre d'améliorer la vitesse d'apprentissage.
     Dans notre cas, la dimension des données est impraticable, que ce soit en termes de mémoire ou de temps de calcul, ce qui aurait été le cas avec n’importe quel modèle de régression simple.
     Donc pour pouvoir s’en servir comme modèle de référence, on utilise un sous-ensemble des données d’origine, basé sur un vocabulaire contenant les quelques milliers de mots les plus fréquents.
+    Ce sous-ensemble contient de l'ordre de 10% du volume de données initial.
     Les résultats sont assez moyens (autour de 74%). L'amélioration apportée par la lemmatisation et le stemming est marginale sur l'accuracy mais assez notable sur le temps de calcul.
 
-9 - Ensuite je suis passé au deeplearning. Mes premiers modèles sont seulement composé de deux couches denses.
-    Comme pour les random forest, les données en entrée sont les bag-of-words, avec la même problématique de dimensionnalité. J'ai donc réutilisé les données avec le vocabulaire restreint.
-    Les résultats sont un peu meilleur (autour de 76,5%), mais les temps d'entraînements sont comparables. Les traitements additionnels améliorent les temps de calculs, mais l'accuracy similaire.
+9 - Ensuite je suis passé au deeplearning.
+    Avant de présenter les modèles, je vais parler rapidement de la fonction de perte et de l'optimiseur.
+
+    La fonction de perte est la fonction que l’on cherche à minimiser lors de l’apprentissage. Celle que j'ai utilisé pour l’ensemble des modèles est l’entropie croisée binaire.
+    C'est une fonction qui exprime la divergence moyenne entre les prédictions du modèle et la valeur de la variable cible.
+
+    L’optimiseur est l’algorithme qui sert à minimiser la fonction de perte.
+    Le plus connu est la descente de gradient stochastique, qui est un algorithme qui étudie itérativement la répercussion des variations des poids du modèle sur la fonction de perte.
+    Pour mes modèles j'utilise Adam, qui est un algorithme qui estime les moments d’ordre 1 et 2, c’est-à-dire l’amplitude des répercussions des variations des poids et leur dérivée.
+    Par analogie, ce serait l'équivalent de la vitesse et de l'accélération, en mécanique.
+    Pour les modèles avec embeddings, j'utilise Adamax, qui est une variante d’Adam efficace avec les embeddings.
+
+    Mes premiers modèles sont composé seulement de deux couches denses.
+    Comme pour les random forest, les données en entrée sont les bag-of-words, avec la même problématique de dimensionnalité. J'ai donc réutilisé le petit jeu de données, avec le vocabulaire restreint.
+    Les résultats sont un peu meilleur (autour de 76,5%), mais les temps d'entraînements sont comparables. Les traitements additionnels améliorent les temps de calculs, mais l'accuracy reste similaire.
 
 
 10 - [lire et expliquer]
@@ -43,19 +57,22 @@
 
 12 - [décrire]
 
-13 - Le premier modèle avec embedding est un réseau de neurones convolutif. Une couche de convolution applique des filtres sur des fenêtres de mots de taille prédéfinie, et les paramètres des filtres sont appris par le modèle.
-     La couche de pooling permet de réduire la dimension des données, et les deux couches denses qui suivent permettent d'effectuer les prédictions.
+13 - Le premier modèle avec embedding est un réseau de neurones convolutif.
+     Dans ce modèle, la couche de convolution applique des filtres sur des fenêtres de mots de taille prédéfinie, et les paramètres des filtres sont appris par le modèle.
+     La couche de pooling permet de réduire la dimension des données qui sortent de la couche de convolution, et les deux couches denses qui suivent permettent d'effectuer les prédictions.
 
      Le second modèle est un réseau avec une couche Long Short Term Memory (ou LSTM). Il s’agit d’une couche récurrente, qui traite les données de manière séquentielle. Cette couche à la particularité de posséder une mémoire.
-     Pour chaque élément d’une séquence, elle peut mettre à jour le contenu de sa mémoire, oublier de l’information, ou influer sur la sortie du neurone. Les paramètres de son comportement sont des poids appris par le modèle.
+     Pour chaque élément d’une séquence, elle peut mettre à jour le contenu de sa mémoire, oublier de l’information, ou influer sur la sortie du neurone en utilisant le contenu de sa mémoire.
+     Les paramètres qui définissent son comportement sont des poids appris par le modèle lors de l'entraînement.
 
 14 - [lire]
 
 15 - Les résultats sont corrects, avec une précision autour des 80% Les temps de calculs sont des milliers de fois plus rapides pour entraîner les modèles, avec un temps de 5 minutes pour entraîner le meilleur modèle.
-     La rapidité s'explique par la petite dimension des données en entrée.
+     La rapidité s'explique notamment par la petite dimension des données en entrée.
 
-16 - Pour essayer de comprendre pourquoi mes résultats n'étaient pas meilleurs j'ai essayé de voir si le taux d'erreur dépendait du nombre de mot d'un texte.
-     En pratique les résultats se détériorent légèrement avec la longueur des textes. A noter que les taux d'erreurs pour les phrases de plus de 17 mots ne sont pas représentatifs car les occurences sont trop faibles.
+16 - Pour essayer de comprendre pourquoi mes résultats n'étaient pas meilleurs j'ai essayé de voir si le taux d'erreur dépendait du nombre de mot dans un texte.
+     En pratique les résultats se détériorent légèrement avec la longueur des textes, mais pas de manière significative.
+     A noter que les taux d'erreurs pour les phrases de plus de 17 mots ne sont pas représentatifs car les occurences sont trop faibles.
 
 17 - [lire et décrire]
      
@@ -64,8 +81,8 @@
 19 - [lire] En pratique les résultats obtenus avec ce service ce sont avérés décevants car une grande portion du jeu d’entraînement est prédite comme neutre par l’API, ce qui rend les prédictions binaires associées de mauvaise qualité.
 
 20 - En conclusion, je peux dire que mes meilleurs modèles sont définitivement ceux avec embedding, qui offrent une précision nettement supérieure aux autres modèles et des temps d'entraînement praticables avec de très grands datasets.
-     Pour aller plus loin et tenter d'améliorer encore l'accuracy des modèles, j'ai deux autres pistes potentielles:
-     Soit entraîner mon propre embedding et donc créer mon propre vocabulaire de référence, mais les temps d'entraînement peuvent être très longs.
-     Soit me tourner vers des modèles encore plus avancés comme les mécanismes d'attention.
-     Quoi qu'il en soit on peut considérer ces deux approches comme au delà du scope de ce projet.
+     Pour aller plus loin et tenter d'améliorer encore l'accuracy des modèles, j'ai deux pistes potentielles:
+     Soit entraîner mon propre embedding et donc créer mon propre vocabulaire de référence, mais les temps d'entraînement pour ces modèles peuvent être très longs.
+     Une autre idée est me tourner vers des modèles encore plus avancés comme les mécanismes d'attention.
+     Mais quoi qu'il en soit j'ai considéré ces deux approches comme au delà du scope de ce projet.
 
